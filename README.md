@@ -1,5 +1,6 @@
-#Redbird Reverse Proxy
-##With built in Cluster, HTTP2, [LetsEncrypt](https://letsencrypt.org/) and [Docker](https://www.docker.com/) support
+# Redbird Reverse Proxy
+
+## With built in Cluster, HTTP2, [LetsEncrypt](https://letsencrypt.org/) and [Docker](https://www.docker.com/) support
 
 
 ![redbird](http://cliparts.co/cliparts/6cr/o9d/6cro9dRzi.jpg)
@@ -17,16 +18,17 @@ Developed by [manast](http://twitter.com/manast)
 [![BuildStatus](https://secure.travis-ci.org/OptimalBits/redbird.png?branch=master)](http://travis-ci.org/OptimalBits/redbird)
 [![NPM version](https://badge.fury.io/js/redbird.svg)](http://badge.fury.io/js/redbird)
 
-##SUPER HOT
+## SUPER HOT
+
 Support for HTTP2. You can now enable HTTP2 just by setting the HTTP2 flag to true. Keep in mind that HTTP2 requires
 SSL/TLS certificates. Thankfully we also support LetsEncrypt so this becomes easy as pie.
 
-##HOT
+## HOT
 
 We have now support for automatic generation of SSL certificates using [LetsEncrypt](#letsencrypt). Zero config setup for your
 TLS protected services that just works.
 
-##Features
+## Features
 
 - Flexible and easy routing
 - Websockets
@@ -40,14 +42,14 @@ TLS protected services that just works.
 - Based on top of rock-solid node-http-proxy and battle tested on production in many sites
 - Optional logging based on bunyan
 
-##Install
+## Install
 
 
 ```sh
 npm install redbird
 ```
 
-##Example
+## Example
 
 
 You can programmatically register or unregister routes dynamically even if the proxy is already running:
@@ -114,19 +116,19 @@ var proxy = require('redbird')({
 });
 
 ```
-##About HTTPS
+## About HTTPS
 
 The HTTPS proxy supports virtual hosts by using SNI (which most modern browsers support: IE7 and above).
 The proxying is performed by hostname, so you must use the same SSL certificates for a given hostname independently of its paths.
 
-###LetsEncrypt
+### LetsEncrypt
 
 Some important considerations when using LetsEncrypt. You need to agree to LetsEncrypt [terms of service](https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf). When using
 LetsEncrypt, the obtained certificates will be copied to disk to the specified path. Its your responsibility to backup, or save persistently when applicable. Keep in mind that
 these certificates needs to be handled with care so that they cannot be accessed by malicious users. The certificates will be renewed every
 2 months automatically forever.
 
-##HTTPS Example
+## HTTPS Example
 
 (NOTE: This is a legacy example not needed when using LetsEncrypt)
 
@@ -212,7 +214,7 @@ redbird.register('tutorial.com', 'https://172.60.80.2:8083', {
 
 ```
 
-Edge case scenario: you have HTTPS server with two IP  addresses assigned and you clients are old software without SNI support. In this case on both IP addresses they will receive the same fallback certificate. I.e. some of domains will have wrong certificate. To handle this case you can create two HTTPS servers each bound to its own IP address and serving appropriate certificate.
+Edge case scenario: you have an HTTPS server with two IP addresses assigned to it and your clients use old software without SNI support. In this case, both IP addresses will receive the same fallback certificate. I.e. some of the domains will get a wrong certificate. To handle this case you can create two HTTPS servers each one bound to its own IP address and serving the appropriate certificate.
 
 ```js
 var redbird = new require('redbird')({
@@ -251,7 +253,7 @@ redbird.register('my-other-domain.com', 'http://192.168.0.12:8001', {
 });
 ```
 
-##Docker support
+## Docker support
 If you use docker, you can tell Redbird to automatically register routes based on image
 names. You register your image name and then every time a container starts from that image,
 it gets registered, and unregistered if the container is stopped. If you run more than one
@@ -262,12 +264,13 @@ var redbird = require('redbird')({
   port: 8080,
 });
 
-require('redbird')
-  .docker(redbird)
-  .register("example.com", 'company/myimage:latest');
+var docker = require('redbird').docker;
+docker(redbird).register("old.api.com", 'company/api:v1.0.0');
+docker(redbird).register("stable.api.com", 'company/api:v2.*');
+docker(redbird).register("preview.api.com", 'company/api:v[3-9].*');
 ```
 
-##etcd backend
+## etcd backend
 Redbird can use [node-etcd](https://github.com/stianeikeland/node-etcd) to automatically create proxy records from an etcd cluster. Configuration
 is accomplished by passing an array of [options](https://github.com/stianeikeland/node-etcd#constructor-options), plus the hosts and path variables,
 which define which etcd cluster hosts, and which directory within those hosts, that Redbird should poll for updates.
@@ -294,7 +297,7 @@ or by passing a JSON object containing multiple hosts, and Redbird options:
 ```
 
 
-##Cluster support
+## Cluster support
 Redbird support automatic support for node cluster. Just specify in the options object
 the number of processes that you want Redbird to use. Redbird will automatically re-start
 any thread thay may crash automatically, increasing even more its reliability.
@@ -306,7 +309,7 @@ var redbird = new require('redbird')({
 });
 ```
 
-##NTLM support
+## NTLM support
 If you need NTLM support, you can tell Redbird to add the required header handler. This
 registers a response handler which makes sure the NTLM auth header is properly split into
 two entries from http-proxy.
@@ -318,7 +321,7 @@ var redbird = new require('redbird')({
 });
 ```
 
-##Custom Resolvers
+## Custom Resolvers
 
 With custom resolvers, you can decide how the proxy server handles request. Custom resolvers allow you to extend Redbird considerably. With custom resolvers, you can perform the following:
 
@@ -395,7 +398,7 @@ setTimeout(function() {
 }, 600000);
 ```
 
-##Roadmap
+## Roadmap
 
 - Statistics (number of connections, load, response times, etc)
 - CORS support.
@@ -403,7 +406,7 @@ setTimeout(function() {
 - Simple IP Filtering.
 - Automatic routing via Redis.
 
-##Reference
+## Reference
 
 [constructor](#redbird)
 [register](#register)
@@ -412,7 +415,7 @@ setTimeout(function() {
 [close](#close)
 
 <a name="redbird"/>
-###Redbird(opts)
+### Redbird(opts)
 
 This is the Proxy constructor. Creates a new Proxy and starts listening to
 the given port.
